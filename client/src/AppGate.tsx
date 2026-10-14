@@ -5,6 +5,7 @@ import { ErrorState } from './components/ErrorState.js'
 import { LoadingState } from './components/LoadingState.js'
 import { useCurrentGroup } from './context/GroupContext.js'
 import { useCreateGroupMutation, useGroupsQuery } from './hooks/useGroups.js'
+import { isRetryableError } from './utils/errors.js'
 
 // Ensures there is always a valid current group before any screen renders,
 // and shows the "no groups yet" flow otherwise (User_Stories_User_Flows.md
@@ -23,12 +24,19 @@ export function AppGate({ children }: { children: ReactNode }) {
     }
   }, [groupsQuery.data, currentGroupId, setCurrentGroupId])
 
-  if (groupsQuery.isLoading) {
-    return <LoadingState label="Loading groups…" />
+  // Loading and failure render inside the app shell (see App.tsx), so the
+  // navigation stays usable while the server is unreachable or waking up.
+  if (groupsQuery.isPending) {
+    return <LoadingState label="Connecting to your groups…" />
   }
 
   if (groupsQuery.isError) {
-    return <ErrorState error={groupsQuery.error} onRetry={() => groupsQuery.refetch()} />
+    return (
+      <ErrorState
+        error={groupsQuery.error}
+        onRetry={isRetryableError(groupsQuery.error) ? () => groupsQuery.refetch() : undefined}
+      />
+    )
   }
 
   if ((groupsQuery.data ?? []).length === 0) {

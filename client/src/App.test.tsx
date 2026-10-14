@@ -60,7 +60,9 @@ describe('App navigation', () => {
     expect(await screen.findByText('Settings')).toBeInTheDocument()
 
     await user.click(screen.getByRole('button', { name: 'Back' }))
-    await screen.findByText('Goa Trip')
+    // Wait for a Home-only control. Settings also shows the group name, so
+    // waiting on the name alone can match the previous screen mid-navigation.
+    await screen.findByRole('button', { name: 'Group settings' })
 
     await user.click(screen.getByRole('button', { name: 'Settlement' }))
     expect(await screen.findByText('Outstanding')).toBeInTheDocument()

@@ -24,6 +24,7 @@ export function HomeScreen() {
   const { currentGroupId, setCurrentGroupId } = useCurrentGroup()
   const [activeSheet, setActiveSheet] = useState<ActiveSheet>('none')
   const [filters, setFilters] = useState<HomeFilterState>({ sort: 'newest' })
+  const [search, setSearch] = useState('')
 
   const groupQuery = useGroupQuery(currentGroupId)
   const groupsQuery = useGroupsQuery()
@@ -46,7 +47,23 @@ export function HomeScreen() {
     sort: filters.sort,
   })
 
-  const hasActiveFilters = Boolean(filters.categoryId || filters.personId || filters.month)
+  const hasActiveFilters = Boolean(
+    filters.categoryId || filters.personId || filters.month || search.trim(),
+  )
+
+  // Text search is applied to the loaded list, since the API has no search
+  // parameter. It matches the description, payer name and category name.
+  const visibleExpenses = useMemo(() => {
+    const term = search.trim().toLowerCase()
+    const expenses = expensesQuery.data ?? []
+    if (!term) return expenses
+    return expenses.filter(
+      (expense) =>
+        expense.description.toLowerCase().includes(term) ||
+        expense.paid_by.name.toLowerCase().includes(term) ||
+        (expense.category?.name.toLowerCase().includes(term) ?? false),
+    )
+  }, [expensesQuery.data, search])
 
   return (
     <div className="screen">
@@ -71,6 +88,14 @@ export function HomeScreen() {
 
         <div className="section">
           <h2 className="section__title">Recent</h2>
+          <input
+            type="search"
+            className="form-input search-input"
+            aria-label="Search expenses"
+            placeholder="Search expenses"
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+          />
           <FilterSortBar
             categories={categoriesQuery.data ?? []}
             people={peopleQuery.data ?? []}
@@ -83,7 +108,7 @@ export function HomeScreen() {
             <ErrorState error={expensesQuery.error} onRetry={() => expensesQuery.refetch()} />
           ) : (
             <TransactionList
-              expenses={expensesQuery.data ?? []}
+              expenses={visibleExpenses}
               emptyTitle={
                 hasActiveFilters ? 'No transactions match these filters.' : 'No expenses yet.'
               }

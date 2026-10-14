@@ -6,7 +6,7 @@ interface EmptyStateProps {
 
 export function EmptyState({ title, body, action }: EmptyStateProps) {
   return (
-    <div className="state-block" role="status">
+    <div className="state-block state-block--empty" role="status">
       <p className="state-block__title">{title}</p>
       {body && <p className="state-block__body">{body}</p>}
       {action}

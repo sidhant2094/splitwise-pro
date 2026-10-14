@@ -1,18 +1,40 @@
 :root {
-  color-scheme: light;
+  color-scheme: dark;
 
-  --color-bg: #f7f7f8;
-  --color-surface: #ffffff;
-  --color-text-primary: #111114;
-  --color-text-secondary: #6b7280;
-  --color-text-muted: #9296a0;
-  --color-border: #e7e7ea;
-  --color-positive: #1f7a4d;
-  --color-negative: #c1443b;
-  --color-accent: #3b66d6;
-  --color-accent-contrast: #ffffff;
-  --color-danger: #c1443b;
-  --color-danger-surface: #fbeceb;
+  /* Surfaces: layered, slightly blue-black, for a premium dark finance feel. */
+  --color-bg: #0a0c12;
+  --color-bg-elevated: #0f1219;
+  --color-surface: #131722;
+  --color-surface-raised: #1a1f2d;
+  --color-border: #242a3a;
+  --color-border-strong: #323a4f;
+
+  --color-text-primary: #f2f4f8;
+  --color-text-secondary: #9ba4b8;
+  --color-text-muted: #697187;
+
+  /* Money: green for amounts owed to someone, red for amounts owed. */
+  --color-positive: #3ddc97;
+  --color-negative: #ff7a7a;
+  --color-accent: #7b8cff;
+  --color-accent-strong: #5f72f0;
+  --color-accent-soft: rgba(123, 140, 255, 0.14);
+  --color-accent-contrast: #0a0c12;
+  --color-danger: #ff6b6b;
+  --color-danger-surface: rgba(255, 107, 107, 0.12);
+  --color-warning-surface: rgba(255, 196, 61, 0.12);
+  --color-warning-text: #ffd27a;
+
+  /* Chart palette (category donut and bars). Ordered for contrast on dark. */
+  --chart-1: #7b8cff;
+  --chart-2: #3ddc97;
+  --chart-3: #ffb547;
+  --chart-4: #ff7a9c;
+  --chart-5: #5fd3f3;
+  --chart-6: #b99cff;
+
+  --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 12px 32px rgba(0, 0, 0, 0.35);
+  --shadow-float: 0 20px 60px rgba(0, 0, 0, 0.55);
 
   --space-1: 4px;
   --space-2: 8px;
@@ -22,9 +44,9 @@
   --space-6: 24px;
   --space-7: 32px;
 
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 20px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
 
   --touch-min: 44px;
 
@@ -34,7 +56,7 @@
   --safe-right: env(safe-area-inset-right, 0px);
 
   --font-family:
-    -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', sans-serif;
+    -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', 'Segoe UI', sans-serif;
 }
 
 * {
